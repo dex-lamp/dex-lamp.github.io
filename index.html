@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LAMP | Latent Motion Prior-Guided Dexterous Manipulation</title>
+    <meta
+      name="description"
+      content="LAMP is a latent motion prior-guided framework for real-world dexterous hand manipulation with imitation learning and residual reinforcement learning."
+    />
+    <meta property="og:title" content="LAMP: Latent Motion Prior-Guided Real-World Learning for Dexterous Hand Manipulation" />
+    <meta property="og:description" content="A low-dimensional, history-conditioned latent hand-action interface for real-world dexterous manipulation." />
+    <meta property="og:image" content="assets/abstract.jpg" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="assets/lamp-logo.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="LAMP home">
+        <img src="assets/lamp-logo.png" alt="" />
+        <span>Dex-LAMP</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#method">Method</a>
+        <a href="#tasks">Tasks</a>
+        <a href="#media">Media</a>
+        <a href="#citation">Citation</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-media" aria-hidden="true">
+          <img src="assets/abstract.jpg" alt="" />
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="eyebrow">Real-World Dexterous Manipulation</p>
+          <h1 id="hero-title">LAMP</h1>
+          <p class="subtitle">Latent Motion Prior-Guided Real-World Learning for Dexterous Hand Manipulation</p>
+          <p class="summary">
+            LAMP learns a history-conditioned latent motion prior for dexterous hands, then uses the same compact,
+            decodable action interface for imitation learning and online residual reinforcement learning.
+          </p>
+        </div>
+      </section>
+
+      <section class="intro band">
+        <div class="section-grid">
+          <div>
+            <p class="section-kicker">Core Idea</p>
+            <h2>Move the hand in a learned prior space, not raw joint space.</h2>
+          </div>
+          <p>
+            Directly predicting or exploring high-dimensional hand commands makes arm-hand coordination difficult and can
+            produce unsafe contact behavior. LAMP exposes the robot arm in its native control space while routing the
+            dexterous hand through a low-dimensional latent motion prior learned from demonstrations.
+          </p>
+        </div>
+      </section>
+
+      <section id="method" class="method">
+        <div class="section-heading">
+          <p class="section-kicker">Method</p>
+          <h2>Three stages around one frozen hand prior</h2>
+        </div>
+        <div class="pipeline">
+          <article>
+            <span class="step">01</span>
+            <h3>Learn LMPM</h3>
+            <p>
+              A latent motion prior model encodes recent hand history into a Gaussian prior and decodes latent samples
+              back into executable hand targets.
+            </p>
+          </article>
+          <article>
+            <span class="step">02</span>
+            <h3>Imitate in Latent Space</h3>
+            <p>
+              Behavior cloning predicts native arm actions and low-dimensional hand offsets around the current prior
+              center instead of full raw hand commands.
+            </p>
+          </article>
+          <article>
+            <span class="step">03</span>
+            <h3>Refine with Residual RL</h3>
+            <p>
+              Online exploration applies residual corrections in the same latent hand space, reducing brittle
+              high-dimensional finger perturbations during contact.
+            </p>
+          </article>
+        </div>
+        <div class="comparison">
+          <figure>
+            <img src="assets/high-dimensional-space.jpg" alt="High-dimensional hand action space visualization" />
+            <figcaption>Raw hand action spaces contain many task-out-of-domain exploration directions.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/latent-prior-space.png" alt="Latent prior space visualization" />
+            <figcaption>The learned prior supplies a compact coordinate system for smooth hand corrections.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="tasks" class="tasks band">
+        <div class="section-heading">
+          <p class="section-kicker">Real Robot Tasks</p>
+          <h2>Contact-rich evaluation with a dexterous hand</h2>
+        </div>
+        <div class="task-grid">
+          <figure>
+            <img src="assets/task-pick-place.jpg" alt="Dexterous hand performing pick and place" />
+            <figcaption>Pick and Place</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/task-drawer.jpg" alt="Dexterous hand opening a drawer" />
+            <figcaption>Open Drawer</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/task-box.jpg" alt="Dexterous hand opening a box" />
+            <figcaption>Open Box</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/task-tissue.jpg" alt="Dexterous hand pulling tissue" />
+            <figcaption>Pull Tissue</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="media" class="media">
+        <div class="section-heading">
+          <p class="section-kicker">Media</p>
+          <h2>Rollout preview</h2>
+        </div>
+        <div class="media-grid">
+          <video controls playsinline muted poster="assets/demo-poster.jpg">
+            <source src="assets/pick-place-demo.mp4" type="video/mp4" />
+          </video>
+          <figure>
+            <img src="assets/motion-sequence.jpg" alt="Dexterous pick-and-place motion sequence" />
+            <figcaption>
+              A representative pick-and-place trajectory illustrates the arm-hand coordination learned through the
+              prior-guided interface.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="release band">
+        <div class="section-grid">
+          <div>
+            <p class="section-kicker">Release</p>
+            <h2>Paper, code, and data</h2>
+          </div>
+          <div class="release-list" aria-label="Release status">
+            <div>
+              <strong>Paper</strong>
+              <span>Coming soon</span>
+            </div>
+            <div>
+              <strong>Code</strong>
+              <span>Coming soon</span>
+            </div>
+            <div>
+              <strong>Demo Videos</strong>
+              <span>Initial preview online</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="citation" class="citation">
+        <div class="section-heading">
+          <p class="section-kicker">Citation</p>
+          <h2>BibTeX</h2>
+        </div>
+        <pre><code>@misc{lamp2026,
+  title  = {LAMP: Latent Motion Prior-Guided Real-World Learning for Dexterous Hand Manipulation},
+  author = {Anonymous Authors},
+  year   = {2026}
+}</code></pre>
+      </section>
+    </main>
+
+    <footer>
+      <span>Dex-LAMP</span>
+      <span>Latent motion priors for real-world dexterous manipulation.</span>
+    </footer>
+  </body>
+</html>
