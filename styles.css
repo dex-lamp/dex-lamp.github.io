@@ -738,43 +738,45 @@ td span {
   box-shadow: 0 14px 38px rgba(16, 19, 22, 0.08);
 }
 
-.video-thumb {
+.video-frame {
   position: relative;
-  display: block;
   width: 100%;
-  padding: 0;
   overflow: hidden;
   background: #0f1418;
-  border: 0;
   border-bottom: 1px solid var(--line);
 }
 
-.video-thumb img {
+.rollout-video {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  transition: transform 180ms ease;
+  background: #050708;
 }
 
-.video-thumb:hover img,
-.video-thumb:focus-visible img {
-  transform: scale(1.03);
+.rollout-video:focus-visible {
+  outline: 3px solid var(--lime);
+  outline-offset: -3px;
 }
 
-.play-mark {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
+.expand-video {
+  width: fit-content;
+  margin-top: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 34px;
+  min-height: 32px;
   padding: 0 12px;
   color: #111315;
   background: var(--lime);
+  border: 0;
   border-radius: 7px;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 900;
+}
+
+.expand-video:hover,
+.expand-video:focus-visible {
+  background: #ffffff;
 }
 
 .video-copy {

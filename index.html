@@ -316,10 +316,11 @@
 
       const clipCard = (clip) => `
         <article class="video-card">
-          <button class="video-thumb" type="button" data-video-id="${escapeHtml(clip.slug)}" aria-label="Play ${escapeHtml(clip.taskLabel)} ${escapeHtml(clip.groupLabel)} ${escapeHtml(phaseNames[clip.phase])}">
-            <img src="${escapeHtml(clip.poster)}" alt="${escapeHtml(clip.taskLabel)} ${escapeHtml(clip.groupLabel)} ${escapeHtml(phaseNames[clip.phase])} rollout preview" loading="lazy" />
-            <span class="play-mark">Play</span>
-          </button>
+          <div class="video-frame">
+            <video class="rollout-video" controls playsinline preload="metadata" poster="${escapeHtml(clip.poster)}">
+              <source src="${escapeHtml(clip.video)}" type="video/mp4" />
+            </video>
+          </div>
           <div class="video-copy">
             <div class="tags">
               <span>${escapeHtml(phaseNames[clip.phase])}</span>
@@ -327,6 +328,9 @@
             </div>
             <h4>${escapeHtml(clip.taskLabel)} · ${escapeHtml(clip.groupLabel)}</h4>
             <p>${escapeHtml(clip.sourceName)}</p>
+            <button class="expand-video" type="button" data-video-id="${escapeHtml(clip.slug)}" aria-label="Open ${escapeHtml(clip.taskLabel)} ${escapeHtml(clip.groupLabel)} ${escapeHtml(phaseNames[clip.phase])} video larger">
+              Open large
+            </button>
           </div>
         </article>
       `;
@@ -404,8 +408,15 @@
         render();
       });
 
+      sections.addEventListener("play", (event) => {
+        if (!event.target.matches(".rollout-video")) return;
+        document.querySelectorAll(".rollout-video").forEach((video) => {
+          if (video !== event.target) video.pause();
+        });
+      }, true);
+
       sections.addEventListener("click", (event) => {
-        const trigger = event.target.closest(".video-thumb");
+        const trigger = event.target.closest(".expand-video");
         if (!trigger) return;
         const clip = videos.find((item) => item.slug === trigger.dataset.videoId);
         if (clip) openVideo(clip);
