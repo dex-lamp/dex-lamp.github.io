@@ -17,15 +17,15 @@
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="#top" aria-label="LAMP home">
+      <a class="brand" href="#top" aria-label="Dex-LAMP home">
         <img src="assets/lamp-logo.png" alt="" />
         <span>Dex-LAMP</span>
       </a>
       <nav aria-label="Primary navigation">
         <a href="#method">Method</a>
-        <a href="#tasks">Tasks</a>
-        <a href="#media">Media</a>
-        <a href="#citation">Citation</a>
+        <a href="#results">Results</a>
+        <a href="#videos">Videos</a>
+        <a href="#figures">Figures</a>
       </nav>
     </header>
 
@@ -40,9 +40,13 @@
           <h1 id="hero-title">LAMP</h1>
           <p class="subtitle">Latent Motion Prior-Guided Real-World Learning for Dexterous Hand Manipulation</p>
           <p class="summary">
-            LAMP learns a history-conditioned latent motion prior for dexterous hands, then uses the same compact,
-            decodable action interface for imitation learning and online residual reinforcement learning.
+            LAMP learns a compact, history-conditioned hand-action prior, then uses the same decodable latent
+            interface for imitation learning and online residual reinforcement learning on real hardware.
           </p>
+          <div class="hero-actions" aria-label="Page shortcuts">
+            <a class="button primary" href="#videos">Watch rollouts</a>
+            <a class="button secondary" href="#figures">View figures</a>
+          </div>
         </div>
       </section>
 
@@ -50,12 +54,12 @@
         <div class="section-grid">
           <div>
             <p class="section-kicker">Core Idea</p>
-            <h2>Move the hand in a learned prior space, not raw joint space.</h2>
+            <h2>Explore the hand through a learned motion manifold.</h2>
           </div>
           <p>
-            Directly predicting or exploring high-dimensional hand commands makes arm-hand coordination difficult and can
-            produce unsafe contact behavior. LAMP exposes the robot arm in its native control space while routing the
-            dexterous hand through a low-dimensional latent motion prior learned from demonstrations.
+            High-DoF hand actions make real-world RL brittle: random finger perturbations break contact, tilt objects,
+            and waste hardware trials. LAMP keeps the robot arm in its native command space, but routes the dexterous
+            hand through a low-dimensional latent motion prior learned from demonstrations.
           </p>
         </div>
       </section>
@@ -63,95 +67,266 @@
       <section id="method" class="method">
         <div class="section-heading">
           <p class="section-kicker">Method</p>
-          <h2>Three stages around one frozen hand prior</h2>
+          <h2>One frozen prior, shared by imitation and residual RL</h2>
         </div>
-        <div class="pipeline">
+        <div class="pipeline" aria-label="LAMP training stages">
           <article>
             <span class="step">01</span>
             <h3>Learn LMPM</h3>
             <p>
-              A latent motion prior model encodes recent hand history into a Gaussian prior and decodes latent samples
-              back into executable hand targets.
+              A latent motion prior model encodes recent hand-action history into a local Gaussian prior and decodes
+              latent samples back into executable hand targets.
             </p>
           </article>
           <article>
             <span class="step">02</span>
             <h3>Imitate in Latent Space</h3>
             <p>
-              Behavior cloning predicts native arm actions and low-dimensional hand offsets around the current prior
-              center instead of full raw hand commands.
+              Behavior cloning predicts native arm commands and latent hand offsets around the current prior center,
+              reducing raw joint regression burden.
             </p>
           </article>
           <article>
             <span class="step">03</span>
             <h3>Refine with Residual RL</h3>
             <p>
-              Online exploration applies residual corrections in the same latent hand space, reducing brittle
-              high-dimensional finger perturbations during contact.
+              Online residuals update the arm directly and adjust the hand in the same latent space, keeping
+              exploration near demonstrated, contact-consistent motion.
             </p>
           </article>
         </div>
         <div class="comparison">
           <figure>
-            <img src="assets/high-dimensional-space.jpg" alt="High-dimensional hand action space visualization" />
+            <img src="assets/high-dimensional-space.jpg" alt="High-dimensional raw hand action space visualization" />
             <figcaption>Raw hand action spaces contain many task-out-of-domain exploration directions.</figcaption>
           </figure>
           <figure>
             <img src="assets/latent-prior-space.png" alt="Latent prior space visualization" />
-            <figcaption>The learned prior supplies a compact coordinate system for smooth hand corrections.</figcaption>
+            <figcaption>The learned prior supplies compact coordinates for smooth, decodable hand corrections.</figcaption>
           </figure>
         </div>
       </section>
 
-      <section id="tasks" class="tasks band">
+      <section id="results" class="results band">
         <div class="section-heading">
-          <p class="section-kicker">Real Robot Tasks</p>
-          <h2>Contact-rich evaluation with a dexterous hand</h2>
+          <p class="section-kicker">Real Robot Results</p>
+          <h2>From usable imitation to near-solved online policies</h2>
+        </div>
+        <div class="metrics" aria-label="Key result metrics">
+          <div>
+            <strong>56.25%</strong>
+            <span>Average IL success</span>
+          </div>
+          <div>
+            <strong>98.75%</strong>
+            <span>Average final RL success</span>
+          </div>
+          <div>
+            <strong>4</strong>
+            <span>Contact-rich real-world tasks</span>
+          </div>
+          <div>
+            <strong>2-D</strong>
+            <span>Latent hand action space</span>
+          </div>
         </div>
         <div class="task-grid">
           <figure>
-            <img src="assets/task-pick-place.jpg" alt="Dexterous hand performing pick and place" />
-            <figcaption>Pick and Place</figcaption>
+            <img src="assets/task-pick-place.jpg" alt="Dexterous hand performing grasp and place" />
+            <figcaption>Grasp &amp; Place <span>75% IL to 100% RL</span></figcaption>
           </figure>
           <figure>
             <img src="assets/task-drawer.jpg" alt="Dexterous hand opening a drawer" />
-            <figcaption>Open Drawer</figcaption>
-          </figure>
-          <figure>
-            <img src="assets/task-box.jpg" alt="Dexterous hand opening a box" />
-            <figcaption>Open Box</figcaption>
+            <figcaption>Open Drawer <span>50% IL to 100% RL</span></figcaption>
           </figure>
           <figure>
             <img src="assets/task-tissue.jpg" alt="Dexterous hand pulling tissue" />
-            <figcaption>Pull Tissue</figcaption>
+            <figcaption>Pull Tissue <span>45% IL to 95% RL</span></figcaption>
           </figure>
-        </div>
-      </section>
-
-      <section id="media" class="media">
-        <div class="section-heading">
-          <p class="section-kicker">Media</p>
-          <h2>Rollout preview</h2>
-        </div>
-        <div class="media-grid">
-          <video controls playsinline muted poster="assets/demo-poster.jpg">
-            <source src="assets/pick-place-demo.mp4" type="video/mp4" />
-          </video>
           <figure>
-            <img src="assets/motion-sequence.jpg" alt="Dexterous pick-and-place motion sequence" />
-            <figcaption>
-              A representative pick-and-place trajectory illustrates the arm-hand coordination learned through the
-              prior-guided interface.
-            </figcaption>
+            <img src="assets/task-box.jpg" alt="Dexterous hand assembling a box" />
+            <figcaption>Assemble Box <span>55% IL to 100% RL</span></figcaption>
           </figure>
         </div>
       </section>
 
-      <section class="release band">
+      <section id="videos" class="videos">
+        <div class="section-heading video-heading">
+          <div>
+            <p class="section-kicker">Cloud Drive Videos</p>
+            <h2>Watch LAMP rollout clips</h2>
+          </div>
+          <div class="filters" aria-label="Video filters">
+            <button class="filter-button active" type="button" data-filter="all">All</button>
+            <button class="filter-button" type="button" data-filter="grasp-place">Grasp &amp; Place</button>
+            <button class="filter-button" type="button" data-filter="drawer">Drawer</button>
+            <button class="filter-button" type="button" data-filter="tissue">Tissue</button>
+            <button class="filter-button" type="button" data-filter="assembly">Assembly</button>
+          </div>
+        </div>
+
+        <div class="video-grid" aria-live="polite">
+          <article class="video-card" data-task="grasp-place">
+            <video controls playsinline preload="metadata" poster="assets/posters/grasp-place-lamp-rl.jpg">
+              <source src="assets/videos/grasp-place-lamp-rl.mp4" type="video/mp4" />
+            </video>
+            <div class="video-copy">
+              <span class="pill success">LAMP RL · 100%</span>
+              <h3>Grasp &amp; Place</h3>
+              <p>Prior-guided residuals keep the bottle upright while the arm places it into the narrow box.</p>
+            </div>
+          </article>
+
+          <article class="video-card" data-task="grasp-place">
+            <video controls playsinline preload="metadata" poster="assets/posters/grasp-place-pca-rl.jpg">
+              <source src="assets/videos/grasp-place-pca-rl.mp4" type="video/mp4" />
+            </video>
+            <div class="video-copy">
+              <span class="pill compare">PCA RL · 70%</span>
+              <h3>Grasp &amp; Place Baseline</h3>
+              <p>A linear hand subspace helps, but residuals can still decode to contact-breaking finger motion.</p>
+            </div>
+          </article>
+
+          <article class="video-card" data-task="drawer">
+            <video controls playsinline preload="metadata" poster="assets/posters/drawer-lamp-rl.jpg">
+              <source src="assets/videos/drawer-lamp-rl.mp4" type="video/mp4" />
+            </video>
+            <div class="video-copy">
+              <span class="pill success">LAMP RL · 100%</span>
+              <h3>Open Drawer</h3>
+              <p>The hand maintains a stable pinch on the small handle while the arm pulls through the drawer stroke.</p>
+            </div>
+          </article>
+
+          <article class="video-card" data-task="drawer">
+            <video controls playsinline preload="metadata" poster="assets/posters/drawer-dq-rise-rl.jpg">
+              <source src="assets/videos/drawer-dq-rise-rl.mp4" type="video/mp4" />
+            </video>
+            <div class="video-copy">
+              <span class="pill risk">DQ-RISE RL · 15%</span>
+              <h3>Open Drawer Baseline</h3>
+              <p>Discrete code switches make contact less smooth during residual refinement.</p>
+            </div>
+          </article>
+
+          <article class="video-card" data-task="tissue">
+            <video controls playsinline preload="metadata" poster="assets/posters/tissue-lamp-rl.jpg">
+              <source src="assets/videos/tissue-lamp-rl.mp4" type="video/mp4" />
+            </video>
+            <div class="video-copy">
+              <span class="pill success">LAMP RL · 95%</span>
+              <h3>Pull Tissue</h3>
+              <p>Continuous latent residuals adapt to changing tissue geometry while preserving the grasp.</p>
+            </div>
+          </article>
+
+          <article class="video-card" data-task="tissue">
+            <video controls playsinline preload="metadata" poster="assets/posters/tissue-pca-il.jpg">
+              <source src="assets/videos/tissue-pca-il.mp4" type="video/mp4" />
+            </video>
+            <div class="video-copy">
+              <span class="pill compare">PCA IL · 35%</span>
+              <h3>Pull Tissue PCA</h3>
+              <p>Compression improves the initial policy, but the fixed linear basis lacks a local motion prior.</p>
+            </div>
+          </article>
+
+          <article class="video-card" data-task="tissue">
+            <video controls playsinline preload="metadata" poster="assets/posters/tissue-mlp-rl.jpg">
+              <source src="assets/videos/tissue-mlp-rl.mp4" type="video/mp4" />
+            </video>
+            <div class="video-copy">
+              <span class="pill risk">MLP RL · 0%</span>
+              <h3>Pull Tissue Raw-Space Variant</h3>
+              <p>Exploration outside the motion manifold repeatedly breaks contact before useful rewards arrive.</p>
+            </div>
+          </article>
+
+          <article class="video-card" data-task="assembly">
+            <video controls playsinline preload="metadata" poster="assets/posters/assembly-lamp-rl.jpg">
+              <source src="assets/videos/assembly-lamp-rl.mp4" type="video/mp4" />
+            </video>
+            <div class="video-copy">
+              <span class="pill success">LAMP RL · 100%</span>
+              <h3>Assemble Box</h3>
+              <p>A long-horizon insertion task where local residuals matter most after early contact.</p>
+            </div>
+          </article>
+
+          <article class="video-card" data-task="assembly">
+            <video controls playsinline preload="metadata" poster="assets/posters/assembly-lamp-il.jpg">
+              <source src="assets/videos/assembly-lamp-il.mp4" type="video/mp4" />
+            </video>
+            <div class="video-copy">
+              <span class="pill compare">LAMP IL · 65%</span>
+              <h3>Assemble Box Imitation</h3>
+              <p>The latent prior gives behavior cloning a strong initialization before online improvement.</p>
+            </div>
+          </article>
+
+          <article class="video-card" data-task="assembly">
+            <video controls playsinline preload="metadata" poster="assets/posters/assembly-dim6-rl.jpg">
+              <source src="assets/videos/assembly-dim6-rl.mp4" type="video/mp4" />
+            </video>
+            <div class="video-copy">
+              <span class="pill risk">Dim-6 RL · ablation</span>
+              <h3>Assemble Box High-Dim Latent</h3>
+              <p>Expanding the hand space leaves more room for residuals to move away from contact-consistent motions.</p>
+            </div>
+          </article>
+
+          <article class="video-card" data-task="assembly">
+            <video controls playsinline preload="metadata" poster="assets/posters/assembly-vq-rl.jpg">
+              <source src="assets/videos/assembly-vq-rl.mp4" type="video/mp4" />
+            </video>
+            <div class="video-copy">
+              <span class="pill compare">VQ-VAE RL</span>
+              <h3>Assemble Box Discrete Latent</h3>
+              <p>Discrete hand-action codes can improve over raw control, but jumps limit fine contact recovery.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="figures" class="figures band">
+        <div class="section-heading">
+          <p class="section-kicker">Paper Figures</p>
+          <h2>Method, results, and failure analysis</h2>
+        </div>
+        <div class="figure-grid">
+          <figure class="wide">
+            <img src="assets/figures/success-failure-summary.png" alt="Success and failure summary across tasks" />
+            <figcaption>Success/failure breakdown across action-space variants and tasks.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/figures/abstract-render.png" alt="LAMP abstract method illustration" />
+            <figcaption>Abstract overview of the latent prior-guided real-world learning loop.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/figures/network-architecture.png" alt="Network architecture comparison" />
+            <figcaption>Action-interface architectures for LAMP, baselines, and ablations.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/figures/action-smoothness-curves.png" alt="Action smoothness curves" />
+            <figcaption>Command smoothness differences behind contact stability.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/figures/ablation-failure-breakdown.png" alt="Ablation failure breakdown" />
+            <figcaption>Ablations of the low-dimensional bottleneck and history-conditioned encoder.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/figures/failure-case-summary.png" alt="Representative failure cases" />
+            <figcaption>Failure cases grouped by arm error, hand error, and stalled execution.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="release" class="release">
         <div class="section-grid">
           <div>
             <p class="section-kicker">Release</p>
-            <h2>Paper, code, and data</h2>
+            <h2>Paper, code, and demo videos</h2>
           </div>
           <div class="release-list" aria-label="Release status">
             <div>
@@ -164,13 +339,13 @@
             </div>
             <div>
               <strong>Demo Videos</strong>
-              <span>Initial preview online</span>
+              <span>Online on this page</span>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="citation" class="citation">
+      <section id="citation" class="citation band">
         <div class="section-heading">
           <p class="section-kicker">Citation</p>
           <h2>BibTeX</h2>
@@ -187,5 +362,21 @@
       <span>Dex-LAMP</span>
       <span>Latent motion priors for real-world dexterous manipulation.</span>
     </footer>
+
+    <script>
+      const filterButtons = document.querySelectorAll(".filter-button");
+      const videoCards = document.querySelectorAll(".video-card");
+
+      filterButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const filter = button.dataset.filter;
+          filterButtons.forEach((item) => item.classList.toggle("active", item === button));
+          videoCards.forEach((card) => {
+            const isVisible = filter === "all" || card.dataset.task === filter;
+            card.hidden = !isVisible;
+          });
+        });
+      });
+    </script>
   </body>
 </html>
