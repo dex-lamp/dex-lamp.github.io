@@ -92,46 +92,30 @@
           <h2>From demonstrations to autonomous rollouts.</h2>
         </div>
 
-        <div class="prior-visual">
-          <div class="prior-crop">
+        <div class="pipeline-showcase">
+          <div class="pipeline-figure">
             <img
-              src="assets/figures/abstract-render.png"
-              alt="LAMP concept: original high-dimensional hand motion is encoded into a low-dimensional latent space and decoded back to executable hand motion"
+              src="assets/figures/main-pipeline.png"
+              alt="LAMP pipeline: LMPM pretraining learns a latent action space from hand histories, imitation learning trains arm and latent hand policies through the frozen prior, and reinforcement learning adds residual actions for autonomous robot rollouts."
             />
-          </div>
-          <div class="prior-copy">
-            <p class="section-kicker">Latent Interface</p>
-            <h3>Encode high-dimensional hand motion into a compact latent space, then decode it for execution.</h3>
-            <p>
-              This is the core LAMP idea: the hand does not explore arbitrary joint targets during online
-              learning. It moves through a structured latent prior learned from demonstrations.
-            </p>
           </div>
         </div>
 
         <div class="pipeline" aria-label="LAMP learning pipeline">
-          <article class="pipeline-node input">
-            <span>01</span>
-            <h3>Demonstrations</h3>
-            <p>Collect task rollouts with arm actions, hand actions, and observation history.</p>
-          </article>
-          <div class="pipeline-arrow" aria-hidden="true"></div>
           <article class="pipeline-node prior">
-            <span>02</span>
-            <h3>Latent Motion Prior</h3>
-            <p>Encode recent hand motion into a local latent prior and decode latent offsets back to hand targets.</p>
+            <span>Pretrain</span>
+            <h3>LMPM turns hand histories into a compact latent action space.</h3>
+            <p>Offline demonstrations teach an encoder-decoder prior that maps smooth latent samples back to executable hand motion.</p>
           </article>
-          <div class="pipeline-arrow" aria-hidden="true"></div>
           <article class="pipeline-node policy">
-            <span>03</span>
-            <h3>IL Policy</h3>
-            <p>Clone arm commands directly and hand commands through the learned latent interface.</p>
+            <span>Imitate</span>
+            <h3>The visuo-motor policy learns arm actions and latent hand actions together.</h3>
+            <p>The arm stays in its native command space while the hand passes through the frozen LMPM decoder.</p>
           </article>
-          <div class="pipeline-arrow" aria-hidden="true"></div>
           <article class="pipeline-node rl">
-            <span>04</span>
-            <h3>Residual RL</h3>
-            <p>Improve online while keeping hand residuals inside the decodable motion prior.</p>
+            <span>Improve</span>
+            <h3>Online residual learning corrects the policy without leaving the prior.</h3>
+            <p>Residual actions refine both the arm and latent hand commands during real-world autonomous trials.</p>
           </article>
         </div>
 
