@@ -9,8 +9,8 @@
       content="LAMP is a latent motion prior-guided framework for real-world dexterous hand manipulation with imitation learning and residual reinforcement learning."
     />
     <meta property="og:title" content="LAMP: Latent Motion Prior-Guided Real-World Learning for Dexterous Hand Manipulation" />
-    <meta property="og:description" content="A low-dimensional, history-conditioned latent hand-action interface for real-world dexterous manipulation." />
-    <meta property="og:image" content="assets/abstract.jpg" />
+    <meta property="og:description" content="Real-world dexterous manipulation videos, paper results, and method evidence for LAMP." />
+    <meta property="og:image" content="assets/posters/grasp-place-lamp-rl.jpg" />
     <meta property="og:type" content="website" />
     <link rel="icon" href="assets/lamp-logo.png" />
     <link rel="stylesheet" href="styles.css" />
@@ -24,42 +24,48 @@
       <nav aria-label="Primary navigation">
         <a href="#method">Method</a>
         <a href="#results">Results</a>
-        <a href="#videos">Videos</a>
-        <a href="#figures">Figures</a>
+        <a href="#videos">Rollouts</a>
+        <a href="#evidence">Evidence</a>
       </nav>
     </header>
 
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-media" aria-hidden="true">
-          <img src="assets/abstract.jpg" alt="" />
-        </div>
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-          <p class="eyebrow">Real-World Dexterous Manipulation</p>
+        <video class="hero-video" autoplay muted loop playsinline poster="assets/posters/grasp-place-lamp-rl.jpg">
+          <source src="assets/videos/grasp-place-lamp-rl.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-shade" aria-hidden="true"></div>
+        <div class="hero-copy">
+          <p class="eyebrow">Real-world dexterous manipulation</p>
           <h1 id="hero-title">LAMP</h1>
           <p class="subtitle">Latent Motion Prior-Guided Real-World Learning for Dexterous Hand Manipulation</p>
           <p class="summary">
-            LAMP learns a compact, history-conditioned hand-action prior, then uses the same decodable latent
-            interface for imitation learning and online residual reinforcement learning on real hardware.
+            A compact, history-conditioned hand-action interface learned from demonstrations, then reused for
+            imitation and online residual RL on real hardware.
           </p>
-          <div class="hero-actions" aria-label="Page shortcuts">
-            <a class="button primary" href="#videos">Watch rollouts</a>
-            <a class="button secondary" href="#figures">View figures</a>
+          <div class="hero-actions">
+            <a class="button primary" href="#videos">Watch 48 rollouts</a>
+            <a class="button secondary" href="#results">Read paper results</a>
           </div>
+        </div>
+        <div class="hero-metrics" aria-label="Key paper and site numbers">
+          <div><strong>56.25%</strong><span>average IL success</span></div>
+          <div><strong>98.75%</strong><span>final RL success</span></div>
+          <div><strong>48</strong><span>cloud-drive videos</span></div>
+          <div><strong>4</strong><span>real robot tasks</span></div>
         </div>
       </section>
 
       <section class="intro band">
         <div class="section-grid">
           <div>
-            <p class="section-kicker">Core Idea</p>
-            <h2>Explore the hand through a learned motion manifold.</h2>
+            <p class="section-kicker">Problem</p>
+            <h2>Dexterous hands fail when exploration ignores contact.</h2>
           </div>
           <p>
-            High-DoF hand actions make real-world RL brittle: random finger perturbations break contact, tilt objects,
-            and waste hardware trials. LAMP keeps the robot arm in its native command space, but routes the dexterous
-            hand through a low-dimensional latent motion prior learned from demonstrations.
+            Raw high-DoF hand commands create many ways to slip, stall, or break contact before reward appears.
+            LAMP keeps the arm command space direct, but routes the hand through a learned motion prior so residual
+            updates stay close to demonstrated, decodable motion.
           </p>
         </div>
       </section>
@@ -67,285 +73,178 @@
       <section id="method" class="method">
         <div class="section-heading">
           <p class="section-kicker">Method</p>
-          <h2>One frozen prior, shared by imitation and residual RL</h2>
+          <h2>One motion prior serves both IL and RL.</h2>
         </div>
-        <div class="pipeline" aria-label="LAMP training stages">
-          <article>
-            <span class="step">01</span>
-            <h3>Learn LMPM</h3>
-            <p>
-              A latent motion prior model encodes recent hand-action history into a local Gaussian prior and decodes
-              latent samples back into executable hand targets.
-            </p>
-          </article>
-          <article>
-            <span class="step">02</span>
-            <h3>Imitate in Latent Space</h3>
-            <p>
-              Behavior cloning predicts native arm commands and latent hand offsets around the current prior center,
-              reducing raw joint regression burden.
-            </p>
-          </article>
-          <article>
-            <span class="step">03</span>
-            <h3>Refine with Residual RL</h3>
-            <p>
-              Online residuals update the arm directly and adjust the hand in the same latent space, keeping
-              exploration near demonstrated, contact-consistent motion.
-            </p>
-          </article>
-        </div>
-        <div class="comparison">
-          <figure>
-            <img src="assets/high-dimensional-space.jpg" alt="High-dimensional raw hand action space visualization" />
-            <figcaption>Raw hand action spaces contain many task-out-of-domain exploration directions.</figcaption>
-          </figure>
-          <figure>
-            <img src="assets/latent-prior-space.png" alt="Latent prior space visualization" />
-            <figcaption>The learned prior supplies compact coordinates for smooth, decodable hand corrections.</figcaption>
+        <div class="method-layout">
+          <div class="steps" aria-label="LAMP method stages">
+            <article>
+              <span>01</span>
+              <h3>Learn the latent motion prior</h3>
+              <p>
+                A history-conditioned encoder defines a local latent prior over hand motion, and a frozen decoder maps
+                latent offsets back to executable hand targets.
+              </p>
+            </article>
+            <article>
+              <span>02</span>
+              <h3>Clone demonstrations in the same interface</h3>
+              <p>
+                The policy predicts native arm actions plus compact hand latents, reducing the burden of raw joint
+                regression while preserving dexterous coordination.
+              </p>
+            </article>
+            <article>
+              <span>03</span>
+              <h3>Improve online with residual RL</h3>
+              <p>
+                Residuals refine arm motion directly and hand motion through the latent decoder, keeping exploration
+                near smooth, contact-consistent actions.
+              </p>
+            </article>
+          </div>
+          <figure class="paper-figure method-figure">
+            <img src="assets/figures/network-architecture.png" alt="Network architectures for LAMP and ablations" />
+            <figcaption>
+              The paper compares the full LAMP interface against higher-dimensional, decoder-only, and raw-space
+              variants. This figure anchors the rollout groups shown below.
+            </figcaption>
           </figure>
         </div>
       </section>
 
       <section id="results" class="results band">
         <div class="section-heading">
-          <p class="section-kicker">Real Robot Results</p>
-          <h2>From usable imitation to near-solved online policies</h2>
+          <p class="section-kicker">Paper Results</p>
+          <h2>Reported success rates from the paper.</h2>
         </div>
-        <div class="metrics" aria-label="Key result metrics">
-          <div>
-            <strong>56.25%</strong>
-            <span>Average IL success</span>
-          </div>
-          <div>
-            <strong>98.75%</strong>
-            <span>Average final RL success</span>
-          </div>
-          <div>
-            <strong>4</strong>
-            <span>Contact-rich real-world tasks</span>
-          </div>
-          <div>
-            <strong>2-D</strong>
-            <span>Latent hand action space</span>
-          </div>
+        <div class="task-results" aria-label="Full LAMP task results">
+          <article><strong>Grasp &amp; Place</strong><span>75% IL to 100% RL</span></article>
+          <article><strong>Open Drawer</strong><span>50% IL to 100% RL</span></article>
+          <article><strong>Pull Tissue</strong><span>45% IL to 95% RL</span></article>
+          <article><strong>Assemble Box</strong><span>55% IL to 100% RL</span></article>
         </div>
-        <div class="task-grid">
-          <figure>
-            <img src="assets/task-pick-place.jpg" alt="Dexterous hand performing grasp and place" />
-            <figcaption>Grasp &amp; Place <span>75% IL to 100% RL</span></figcaption>
-          </figure>
-          <figure>
-            <img src="assets/task-drawer.jpg" alt="Dexterous hand opening a drawer" />
-            <figcaption>Open Drawer <span>50% IL to 100% RL</span></figcaption>
-          </figure>
-          <figure>
-            <img src="assets/task-tissue.jpg" alt="Dexterous hand pulling tissue" />
-            <figcaption>Pull Tissue <span>45% IL to 95% RL</span></figcaption>
-          </figure>
-          <figure>
-            <img src="assets/task-box.jpg" alt="Dexterous hand assembling a box" />
-            <figcaption>Assemble Box <span>55% IL to 100% RL</span></figcaption>
-          </figure>
-        </div>
-      </section>
-
-      <section id="videos" class="videos">
-        <div class="section-heading video-heading">
-          <div>
-            <p class="section-kicker">Cloud Drive Videos</p>
-            <h2>Watch LAMP rollout clips</h2>
-          </div>
-          <div class="filters" aria-label="Video filters">
-            <button class="filter-button active" type="button" data-filter="all">All</button>
-            <button class="filter-button" type="button" data-filter="grasp-place">Grasp &amp; Place</button>
-            <button class="filter-button" type="button" data-filter="drawer">Drawer</button>
-            <button class="filter-button" type="button" data-filter="tissue">Tissue</button>
-            <button class="filter-button" type="button" data-filter="assembly">Assembly</button>
-          </div>
-        </div>
-
-        <div class="video-grid" aria-live="polite">
-          <article class="video-card" data-task="grasp-place">
-            <video controls playsinline preload="metadata" poster="assets/posters/grasp-place-lamp-rl.jpg">
-              <source src="assets/videos/grasp-place-lamp-rl.mp4" type="video/mp4" />
-            </video>
-            <div class="video-copy">
-              <span class="pill success">LAMP RL · 100%</span>
-              <h3>Grasp &amp; Place</h3>
-              <p>Prior-guided residuals keep the bottle upright while the arm places it into the narrow box.</p>
-            </div>
-          </article>
-
-          <article class="video-card" data-task="grasp-place">
-            <video controls playsinline preload="metadata" poster="assets/posters/grasp-place-pca-rl.jpg">
-              <source src="assets/videos/grasp-place-pca-rl.mp4" type="video/mp4" />
-            </video>
-            <div class="video-copy">
-              <span class="pill compare">PCA RL · 70%</span>
-              <h3>Grasp &amp; Place Baseline</h3>
-              <p>A linear hand subspace helps, but residuals can still decode to contact-breaking finger motion.</p>
-            </div>
-          </article>
-
-          <article class="video-card" data-task="drawer">
-            <video controls playsinline preload="metadata" poster="assets/posters/drawer-lamp-rl.jpg">
-              <source src="assets/videos/drawer-lamp-rl.mp4" type="video/mp4" />
-            </video>
-            <div class="video-copy">
-              <span class="pill success">LAMP RL · 100%</span>
-              <h3>Open Drawer</h3>
-              <p>The hand maintains a stable pinch on the small handle while the arm pulls through the drawer stroke.</p>
-            </div>
-          </article>
-
-          <article class="video-card" data-task="drawer">
-            <video controls playsinline preload="metadata" poster="assets/posters/drawer-dq-rise-rl.jpg">
-              <source src="assets/videos/drawer-dq-rise-rl.mp4" type="video/mp4" />
-            </video>
-            <div class="video-copy">
-              <span class="pill risk">DQ-RISE RL · 15%</span>
-              <h3>Open Drawer Baseline</h3>
-              <p>Discrete code switches make contact less smooth during residual refinement.</p>
-            </div>
-          </article>
-
-          <article class="video-card" data-task="tissue">
-            <video controls playsinline preload="metadata" poster="assets/posters/tissue-lamp-rl.jpg">
-              <source src="assets/videos/tissue-lamp-rl.mp4" type="video/mp4" />
-            </video>
-            <div class="video-copy">
-              <span class="pill success">LAMP RL · 95%</span>
-              <h3>Pull Tissue</h3>
-              <p>Continuous latent residuals adapt to changing tissue geometry while preserving the grasp.</p>
-            </div>
-          </article>
-
-          <article class="video-card" data-task="tissue">
-            <video controls playsinline preload="metadata" poster="assets/posters/tissue-pca-il.jpg">
-              <source src="assets/videos/tissue-pca-il.mp4" type="video/mp4" />
-            </video>
-            <div class="video-copy">
-              <span class="pill compare">PCA IL · 35%</span>
-              <h3>Pull Tissue PCA</h3>
-              <p>Compression improves the initial policy, but the fixed linear basis lacks a local motion prior.</p>
-            </div>
-          </article>
-
-          <article class="video-card" data-task="tissue">
-            <video controls playsinline preload="metadata" poster="assets/posters/tissue-mlp-rl.jpg">
-              <source src="assets/videos/tissue-mlp-rl.mp4" type="video/mp4" />
-            </video>
-            <div class="video-copy">
-              <span class="pill risk">MLP RL · 0%</span>
-              <h3>Pull Tissue Raw-Space Variant</h3>
-              <p>Exploration outside the motion manifold repeatedly breaks contact before useful rewards arrive.</p>
-            </div>
-          </article>
-
-          <article class="video-card" data-task="assembly">
-            <video controls playsinline preload="metadata" poster="assets/posters/assembly-lamp-rl.jpg">
-              <source src="assets/videos/assembly-lamp-rl.mp4" type="video/mp4" />
-            </video>
-            <div class="video-copy">
-              <span class="pill success">LAMP RL · 100%</span>
-              <h3>Assemble Box</h3>
-              <p>A long-horizon insertion task where local residuals matter most after early contact.</p>
-            </div>
-          </article>
-
-          <article class="video-card" data-task="assembly">
-            <video controls playsinline preload="metadata" poster="assets/posters/assembly-lamp-il.jpg">
-              <source src="assets/videos/assembly-lamp-il.mp4" type="video/mp4" />
-            </video>
-            <div class="video-copy">
-              <span class="pill compare">LAMP IL · 65%</span>
-              <h3>Assemble Box Imitation</h3>
-              <p>The latent prior gives behavior cloning a strong initialization before online improvement.</p>
-            </div>
-          </article>
-
-          <article class="video-card" data-task="assembly">
-            <video controls playsinline preload="metadata" poster="assets/posters/assembly-dim6-rl.jpg">
-              <source src="assets/videos/assembly-dim6-rl.mp4" type="video/mp4" />
-            </video>
-            <div class="video-copy">
-              <span class="pill risk">Dim-6 RL · ablation</span>
-              <h3>Assemble Box High-Dim Latent</h3>
-              <p>Expanding the hand space leaves more room for residuals to move away from contact-consistent motions.</p>
-            </div>
-          </article>
-
-          <article class="video-card" data-task="assembly">
-            <video controls playsinline preload="metadata" poster="assets/posters/assembly-vq-rl.jpg">
-              <source src="assets/videos/assembly-vq-rl.mp4" type="video/mp4" />
-            </video>
-            <div class="video-copy">
-              <span class="pill compare">VQ-VAE RL</span>
-              <h3>Assemble Box Discrete Latent</h3>
-              <p>Discrete hand-action codes can improve over raw control, but jumps limit fine contact recovery.</p>
-            </div>
-          </article>
+        <div class="table-wrap">
+          <table>
+            <caption>Paper-reported success rates for imitation learning (IL) and final online residual RL.</caption>
+            <thead>
+              <tr>
+                <th>Variant</th>
+                <th>Grasp &amp; Place</th>
+                <th>Open Drawer</th>
+                <th>Pull Tissue</th>
+                <th>Assemble Box</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="highlight-row">
+                <th>Full LAMP</th>
+                <td><span>75% IL</span><span>100% RL</span></td>
+                <td><span>50% IL</span><span>100% RL</span></td>
+                <td><span>45% IL</span><span>95% RL</span></td>
+                <td><span>55% IL</span><span>100% RL</span></td>
+              </tr>
+              <tr>
+                <th>w/o low-dimensional bottleneck</th>
+                <td><span>40% IL</span><span>35% RL</span></td>
+                <td><span>65% IL</span><span>85% RL</span></td>
+                <td><span>15% IL</span><span>80% RL</span></td>
+                <td><span>5% IL</span><span>20% RL</span></td>
+              </tr>
+              <tr>
+                <th>w/o history-conditioned encoder</th>
+                <td><span>70% IL</span><span>95% RL</span></td>
+                <td><span>35% IL</span><span>90% RL</span></td>
+                <td><span>40% IL</span><span>60% RL</span></td>
+                <td><span>15% IL</span><span>50% RL</span></td>
+              </tr>
+              <tr>
+                <th>Raw BC (no prior)</th>
+                <td><span>0% IL</span><span>15% RL</span></td>
+                <td><span>20% IL</span><span>0% RL</span></td>
+                <td><span>0% IL</span><span>0% RL</span></td>
+                <td><span>0% IL</span><span>0% RL</span></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
-      <section id="figures" class="figures band">
+      <section id="videos" class="rollouts">
+        <div class="section-heading rollout-heading">
+          <div>
+            <p class="section-kicker">Rollout Matrix</p>
+            <h2>Every task, every group, both IL and RL.</h2>
+          </div>
+          <output id="video-count" aria-live="polite">48 videos</output>
+        </div>
+
+        <div class="controls" aria-label="Rollout filters">
+          <div class="control-group" role="group" aria-label="Task filter">
+            <button class="filter active" type="button" data-filter-type="task" data-filter-value="all">All tasks</button>
+            <button class="filter" type="button" data-filter-type="task" data-filter-value="grasp-place">Grasp &amp; Place</button>
+            <button class="filter" type="button" data-filter-type="task" data-filter-value="open-drawer">Open Drawer</button>
+            <button class="filter" type="button" data-filter-type="task" data-filter-value="pull-tissue">Pull Tissue</button>
+            <button class="filter" type="button" data-filter-type="task" data-filter-value="assemble-box">Assemble Box</button>
+          </div>
+          <div class="control-row">
+            <div class="control-group compact" role="group" aria-label="Phase filter">
+              <button class="filter active" type="button" data-filter-type="phase" data-filter-value="all">IL + RL</button>
+              <button class="filter" type="button" data-filter-type="phase" data-filter-value="il">IL</button>
+              <button class="filter" type="button" data-filter-type="phase" data-filter-value="rl">RL</button>
+            </div>
+            <label class="select-filter">
+              <span>Group</span>
+              <select id="group-filter">
+                <option value="all">All groups</option>
+                <option value="lamp">LAMP</option>
+                <option value="pca">PCA</option>
+                <option value="dq-rise">DQ-RISE</option>
+                <option value="decoder">Decoder-only</option>
+                <option value="dim-6">6-D latent</option>
+                <option value="mlp">MLP / raw-space</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div id="video-sections" class="video-sections" aria-live="polite"></div>
+      </section>
+
+      <section id="evidence" class="evidence band">
         <div class="section-heading">
-          <p class="section-kicker">Paper Figures</p>
-          <h2>Method, results, and failure analysis</h2>
+          <p class="section-kicker">Paper Evidence</p>
+          <h2>The figures explain the behavior behind the clips.</h2>
         </div>
-        <div class="figure-grid">
-          <figure class="wide">
-            <img src="assets/figures/success-failure-summary.png" alt="Success and failure summary across tasks" />
-            <figcaption>Success/failure breakdown across action-space variants and tasks.</figcaption>
+        <div class="evidence-grid">
+          <article class="evidence-copy">
+            <p class="section-kicker">Smooth residuals</p>
+            <h3>Latent hand updates are less jittery than raw or discrete action interfaces.</h3>
+            <p>
+              The smoothness analysis helps interpret why LAMP rollouts keep grasp contact during online updates:
+              residuals remain decodable through the learned hand-motion manifold.
+            </p>
+          </article>
+          <figure class="paper-figure">
+            <img src="assets/figures/action-smoothness-curves.png" alt="Action smoothness curves from the paper" />
+            <figcaption>Command smoothness evidence from the paper.</figcaption>
           </figure>
-          <figure>
-            <img src="assets/figures/abstract-render.png" alt="LAMP abstract method illustration" />
-            <figcaption>Abstract overview of the latent prior-guided real-world learning loop.</figcaption>
+
+          <figure class="paper-figure">
+            <img src="assets/figures/failure-case-summary.png" alt="Representative failure case grid from the paper" />
+            <figcaption>Failure cases become easier to separate into arm, hand, and stalled-motion errors.</figcaption>
           </figure>
-          <figure>
-            <img src="assets/figures/network-architecture.png" alt="Network architecture comparison" />
-            <figcaption>Action-interface architectures for LAMP, baselines, and ablations.</figcaption>
-          </figure>
-          <figure>
-            <img src="assets/figures/action-smoothness-curves.png" alt="Action smoothness curves" />
-            <figcaption>Command smoothness differences behind contact stability.</figcaption>
-          </figure>
-          <figure>
-            <img src="assets/figures/ablation-failure-breakdown.png" alt="Ablation failure breakdown" />
-            <figcaption>Ablations of the low-dimensional bottleneck and history-conditioned encoder.</figcaption>
-          </figure>
-          <figure>
-            <img src="assets/figures/failure-case-summary.png" alt="Representative failure cases" />
-            <figcaption>Failure cases grouped by arm error, hand error, and stalled execution.</figcaption>
-          </figure>
+          <article class="evidence-copy">
+            <p class="section-kicker">Failure modes</p>
+            <h3>Ablations expose what happens when the prior no longer constrains the hand well.</h3>
+            <p>
+              The rollout matrix includes the same six experiment groups per task, so the qualitative videos can be
+              read alongside the paper's failure analysis instead of as isolated demo clips.
+            </p>
+          </article>
         </div>
       </section>
 
-      <section id="release" class="release">
-        <div class="section-grid">
-          <div>
-            <p class="section-kicker">Release</p>
-            <h2>Paper, code, and demo videos</h2>
-          </div>
-          <div class="release-list" aria-label="Release status">
-            <div>
-              <strong>Paper</strong>
-              <span>Coming soon</span>
-            </div>
-            <div>
-              <strong>Code</strong>
-              <span>Coming soon</span>
-            </div>
-            <div>
-              <strong>Demo Videos</strong>
-              <span>Online on this page</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="citation" class="citation band">
+      <section id="citation" class="citation">
         <div class="section-heading">
           <p class="section-kicker">Citation</p>
           <h2>BibTeX</h2>
@@ -364,19 +263,111 @@
     </footer>
 
     <script>
-      const filterButtons = document.querySelectorAll(".filter-button");
-      const videoCards = document.querySelectorAll(".video-card");
+      const state = { task: "all", phase: "all", group: "all" };
+      const taskOrder = ["grasp-place", "open-drawer", "pull-tissue", "assemble-box"];
+      const taskNames = {
+        "grasp-place": "Grasp & Place",
+        "open-drawer": "Open Drawer",
+        "pull-tissue": "Pull Tissue",
+        "assemble-box": "Assemble Box",
+      };
+      const groupOrder = ["lamp", "pca", "dq-rise", "decoder", "dim-6", "mlp"];
+      const groupNames = {
+        lamp: "LAMP",
+        pca: "PCA",
+        "dq-rise": "DQ-RISE",
+        decoder: "Decoder-only",
+        "dim-6": "6-D latent",
+        mlp: "MLP / raw-space",
+      };
+      const phaseNames = { il: "IL", rl: "RL" };
+      const phaseOrder = { il: 0, rl: 1 };
+      const sections = document.querySelector("#video-sections");
+      const count = document.querySelector("#video-count");
+      let videos = [];
 
-      filterButtons.forEach((button) => {
+      const escapeHtml = (value) =>
+        String(value).replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[char]);
+
+      const clipCard = (clip) => `
+        <article class="video-card">
+          <video controls playsinline preload="metadata" poster="${escapeHtml(clip.poster)}">
+            <source src="${escapeHtml(clip.video)}" type="video/mp4" />
+          </video>
+          <div class="video-copy">
+            <div class="tags">
+              <span>${escapeHtml(phaseNames[clip.phase])}</span>
+              <span>${escapeHtml(groupNames[clip.group])}</span>
+            </div>
+            <h4>${escapeHtml(clip.taskLabel)} · ${escapeHtml(clip.groupLabel)}</h4>
+            <p>${escapeHtml(clip.sourceName)}</p>
+          </div>
+        </article>
+      `;
+
+      const render = () => {
+        const filtered = videos.filter((clip) => {
+          return (
+            (state.task === "all" || clip.taskSlug === state.task) &&
+            (state.phase === "all" || clip.phase === state.phase) &&
+            (state.group === "all" || clip.group === state.group)
+          );
+        });
+
+        count.textContent = `${filtered.length} / 48 videos`;
+        sections.innerHTML = taskOrder
+          .map((task) => filtered.filter((clip) => clip.taskSlug === task))
+          .filter((clips) => clips.length > 0)
+          .map((clips) => {
+            clips.sort((a, b) => {
+              const phaseSort = phaseOrder[a.phase] - phaseOrder[b.phase];
+              if (phaseSort !== 0) return phaseSort;
+              return groupOrder.indexOf(a.group) - groupOrder.indexOf(b.group);
+            });
+            return `
+              <section class="rollout-task">
+                <div class="rollout-task-heading">
+                  <h3>${escapeHtml(taskNames[clips[0].taskSlug])}</h3>
+                  <span>${clips.length} clips</span>
+                </div>
+                <div class="video-grid">${clips.map(clipCard).join("")}</div>
+              </section>
+            `;
+          })
+          .join("");
+      };
+
+      document.querySelectorAll(".filter").forEach((button) => {
         button.addEventListener("click", () => {
-          const filter = button.dataset.filter;
-          filterButtons.forEach((item) => item.classList.toggle("active", item === button));
-          videoCards.forEach((card) => {
-            const isVisible = filter === "all" || card.dataset.task === filter;
-            card.hidden = !isVisible;
-          });
+          const type = button.dataset.filterType;
+          state[type] = button.dataset.filterValue;
+          document
+            .querySelectorAll(`.filter[data-filter-type="${type}"]`)
+            .forEach((item) => item.classList.toggle("active", item === button));
+          render();
         });
       });
+
+      document.querySelector("#group-filter").addEventListener("change", (event) => {
+        state.group = event.target.value;
+        render();
+      });
+
+      fetch("assets/videos/manifest.json")
+        .then((response) => response.json())
+        .then((data) => {
+          videos = data;
+          render();
+        })
+        .catch(() => {
+          sections.innerHTML = '<p class="load-error">Video manifest could not be loaded.</p>';
+        });
     </script>
   </body>
 </html>
