@@ -63,16 +63,18 @@
       </section>
 
       <section class="intro band">
-        <div class="section-grid">
-          <div>
+        <div class="intro-grid">
+          <div class="intro-title">
             <p class="section-kicker">Core Idea</p>
-            <h2>Keep hand exploration close to demonstrated motion.</h2>
+            <h2>Structured hand exploration through a compact prior.</h2>
           </div>
-          <p>
-            Raw dexterous hand actions make real robot learning brittle: small residuals can break contact before
-            reward arrives. LAMP keeps the robot arm controllable in its native action space, while the hand moves
-            through a learned latent prior that stays smooth, compact, and decodable.
-          </p>
+          <div class="intro-copy">
+            <p>
+              Raw hand-action spaces make real robot learning brittle. LAMP keeps arm commands in the native action
+              space, while hand commands pass through a demonstration-trained latent prior that stays smooth,
+              compact, and decodable for both imitation learning and residual reinforcement learning.
+            </p>
+          </div>
         </div>
         <div class="module-showcase">
           <div class="module-copy">
@@ -121,21 +123,6 @@
             <h3>Online residual learning corrects the policy without leaving the prior.</h3>
             <p>Residual actions refine both the arm and latent hand commands during real-world autonomous trials.</p>
           </article>
-        </div>
-
-        <div class="pipeline-detail">
-          <div class="lane arm-lane">
-            <strong>Arm control</strong>
-            <span>native actions</span>
-            <span>BC target</span>
-            <span>online residual</span>
-          </div>
-          <div class="lane hand-lane">
-            <strong>Hand control</strong>
-            <span>history-conditioned latent</span>
-            <span>frozen decoder</span>
-            <span>smooth correction</span>
-          </div>
         </div>
       </section>
 

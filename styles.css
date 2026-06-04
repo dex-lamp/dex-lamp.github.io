@@ -278,12 +278,11 @@ section {
   border-block: 1px solid var(--line);
 }
 
-.section-grid,
+.intro-grid,
 .section-heading,
 .module-showcase,
 .pipeline-showcase,
 .pipeline,
-.pipeline-detail,
 .metric-row,
 .task-results,
 .table-wrap,
@@ -294,22 +293,35 @@ section {
   margin-inline: auto;
 }
 
-.section-grid {
+.intro-grid {
   display: grid;
-  grid-template-columns: minmax(260px, 0.9fr) minmax(320px, 1.1fr);
-  gap: 72px;
-  align-items: start;
+  grid-template-columns: minmax(300px, 0.86fr) minmax(420px, 1.14fr);
+  gap: 42px;
+  align-items: center;
 }
 
-.section-grid p:last-child,
+.intro-title h2 {
+  max-width: 640px;
+  font-size: 2.72rem;
+  line-height: 1.08;
+}
+
+.intro-copy {
+  padding-top: 30px;
+}
+
+.intro-copy p,
 .pipeline-node p,
 .video-copy p,
 caption {
   color: var(--muted);
 }
 
-.section-grid p:last-child {
-  font-size: 1.12rem;
+.intro-copy p {
+  max-width: 690px;
+  margin-bottom: 0;
+  font-size: 1.02rem;
+  line-height: 1.7;
 }
 
 .section-heading {
@@ -426,47 +438,6 @@ caption {
 
 .pipeline-node p {
   margin-bottom: 0;
-}
-
-.pipeline-detail {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: 18px;
-}
-
-.lane {
-  display: grid;
-  grid-template-columns: 1fr repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  align-items: center;
-  padding: 14px;
-  background: #101316;
-  border-radius: 8px;
-}
-
-.lane strong,
-.lane span {
-  min-height: 38px;
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 10px;
-  border-radius: 6px;
-  font-weight: 820;
-}
-
-.lane strong {
-  color: var(--lime);
-}
-
-.lane span {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.1);
-  font-size: 0.9rem;
-}
-
-.hand-lane span {
-  background: rgba(10, 157, 163, 0.28);
 }
 
 .metric-row,
@@ -927,13 +898,12 @@ footer span:first-child {
   }
 
   .module-showcase,
-  .pipeline-detail,
-  .section-grid {
+  .intro-grid {
     grid-template-columns: 1fr;
   }
 
-  .lane {
-    grid-template-columns: 1fr;
+  .intro-copy {
+    padding-top: 0;
   }
 
   .metric-row,
@@ -992,6 +962,20 @@ footer span:first-child {
 
   h2 {
     font-size: 2.25rem;
+  }
+
+  .intro h2 {
+    font-size: 1.74rem;
+    line-height: 1.18;
+  }
+
+  .intro-grid {
+    gap: 18px;
+  }
+
+  .intro-copy p {
+    font-size: 0.96rem;
+    line-height: 1.62;
   }
 
   h3 {
