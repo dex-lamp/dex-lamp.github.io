@@ -101,6 +101,13 @@ select {
   object-position: center;
 }
 
+.rlinf-logo {
+  width: 78px;
+  height: 30px;
+  border-radius: 5px;
+  object-fit: contain;
+}
+
 .brand span {
   margin-left: 2px;
 }
